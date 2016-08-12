@@ -1,4 +1,4 @@
-COMP204-16B / COMP242-16B Assignment 3
+COMP204-16B / COMP242-16B Assignment 4
 ======================================
 
 Due on **Sunday, 21^(st) August at 11:30pm**.
