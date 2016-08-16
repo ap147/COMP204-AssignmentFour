@@ -28,7 +28,7 @@ import javafx.stage.Stage;
 import java.util.Random;
 import java.lang.Object;
 
-
+//http://stackoverflow.com/questions/28397700/javafx-how-to-write-text-to-a-new-line-in-a-textarea
 public class Project extends Application
 {
     private static GridPane grid = new GridPane();
@@ -96,21 +96,23 @@ public class Project extends Application
 
     private void addToList(String _name,int _quantity,float _unitCost)
     {
-        Item x = new Item("a", 1, 1);
+        Item x = new Item(_name, _quantity, _unitCost);
         observable.add(x);
         updateTextArea();
     }
     private void updateTextArea()
     {
-
+        textArea.setText("");
+        System.out.println("List size : "+ observable.size());
+        String newline = "\n";
         for(int x =0; x <observable.size(); x++)
         {
+            System.out.println(x);
             Item temp = observable.get(x);
-            textArea.setText("Name      : "+ temp.getName());
-            textArea.setText("Quantity  : "+ temp.getQuantity());
-            textArea.setText("Unit Cost : $"+ temp.getUnitCost());
-            textArea.nextWord();
-            textArea.setText("xx");
+            textArea.appendText("Name      : " + temp.getName() +newline);
+            textArea.appendText("Quantity  : " + temp.getQuantity()+newline);
+            textArea.appendText("Unit Cost : $" + temp.getUnitCost() + newline);
+            textArea.appendText(newline);
         }
     }
 
