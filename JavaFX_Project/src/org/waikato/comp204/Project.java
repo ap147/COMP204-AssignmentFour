@@ -4,6 +4,11 @@ package org.waikato.comp204;
 //http://docs.oracle.com/javafx/2/layout/builtin_layouts.html
 
 import javafx.application.Application;
+import javafx.beans.property.SimpleFloatProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -21,6 +26,7 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import java.util.Random;
+import java.lang.Object;
 
 
 public class Project extends Application
@@ -28,6 +34,7 @@ public class Project extends Application
     private static GridPane grid = new GridPane();
     private TextArea textArea = new TextArea();
 
+    ObservableList<Item> observable = FXCollections.observableArrayList();
     @Override
     public void start(Stage primaryStage) {
         primaryStage.setTitle("JavaFX Project");
@@ -35,6 +42,9 @@ public class Project extends Application
         setupGrid();
         setupTextField();
         setupButton();
+
+        addToList("a",1,1);
+        addToList("b",2,2);
 
         Scene scene = new Scene(grid, 900, 600);
         primaryStage.setScene(scene);
@@ -79,10 +89,31 @@ public class Project extends Application
                 textArea.setText(getRandomNumber()+"");
             }
         });
-        
+
         grid.getChildren().add(BclearNAdd);
 
     }
+
+    private void addToList(String _name,int _quantity,float _unitCost)
+    {
+        Item x = new Item("a", 1, 1);
+        observable.add(x);
+        updateTextArea();
+    }
+    private void updateTextArea()
+    {
+
+        for(int x =0; x <observable.size(); x++)
+        {
+            Item temp = observable.get(x);
+            textArea.setText("Name      : "+ temp.getName());
+            textArea.setText("Quantity  : "+ temp.getQuantity());
+            textArea.setText("Unit Cost : $"+ temp.getUnitCost());
+            textArea.nextWord();
+            textArea.setText("xx");
+        }
+    }
+
     private void clearTextArea()
     {
         textArea.setText("");
@@ -93,7 +124,21 @@ public class Project extends Application
         return ran.nextInt();
     }
 
+    public static class Item {
+        public final SimpleStringProperty name;
+        public final SimpleIntegerProperty quantity;
+        public final SimpleFloatProperty unitCost;
 
+        public Item(String name, int quantity, float unitCost) {
+            this.name = new SimpleStringProperty(name);
+            this.quantity = new SimpleIntegerProperty(quantity);
+            this.unitCost = new SimpleFloatProperty(unitCost);
+        }
+
+        public String getName() { return this.name.get(); }
+        public int getQuantity() { return this.quantity.get(); }
+        public float getUnitCost() { return this.unitCost.get(); }
+    }
 }
 
 
