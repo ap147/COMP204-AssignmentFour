@@ -9,6 +9,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -19,18 +20,32 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import java.util.Random;
 
 
-public class Project extends Application {
-
+public class Project extends Application
+{
     private static GridPane grid = new GridPane();
     private TextArea textArea = new TextArea();
 
     @Override
     public void start(Stage primaryStage) {
-        grid.setGridLinesVisible(true);
         primaryStage.setTitle("JavaFX Project");
 
+        setupGrid();
+        setupTextField();
+        setupButton();
+
+        Scene scene = new Scene(grid, 900, 600);
+        primaryStage.setScene(scene);
+        primaryStage.show();
+    }
+    public static void main(String[] args) {
+        launch(args);
+    }
+    private void setupGrid()
+    {
+        grid.setGridLinesVisible(true);
         ColumnConstraints column1 = new ColumnConstraints();
         column1.setPercentWidth(33.33);
         ColumnConstraints column2 = new ColumnConstraints();
@@ -46,27 +61,36 @@ public class Project extends Application {
         RowConstraints row3 = new RowConstraints();
         row3.setPercentHeight(500);
         grid.getRowConstraints().addAll(row1,row2,row3);
-
+    }
+    private void setupTextField()
+    {
         textArea.setEditable(false);
         grid.add(textArea, 2, 0,1,3);
-
-        Scene scene = new Scene(grid, 900, 600);
-        primaryStage.setScene(scene);
-
-        primaryStage.show();
     }
-    public static void main(String[] args) {
-        launch(args);
-    }
+    private void setupButton()
+    {
+        Button BclearNAdd = new Button();
 
+        BclearNAdd.setText("Clear");
+        BclearNAdd.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                clearTextArea();
+                textArea.setText(getRandomNumber()+"");
+            }
+        });
+        
+        grid.getChildren().add(BclearNAdd);
+
+    }
     private void clearTextArea()
     {
         textArea.setText("");
     }
     private int getRandomNumber()
     {
-        int x = 0;
-        return x;
+        Random ran = new Random();
+        return ran.nextInt();
     }
 
 
