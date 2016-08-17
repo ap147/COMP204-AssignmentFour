@@ -167,7 +167,7 @@ public class Project extends Application
         Item temp = new Item(ProductName, Quantity, Cost, Total);
         observable.add(temp);
         updateTextArea();
-
+        clearTextFields();
     }
 
     private void updateTotal()
@@ -203,6 +203,13 @@ public class Project extends Application
             textArea.appendText("Unit Cost : $" + temp.getUnitCost() + newline);
             textArea.appendText(newline);
         }
+    }
+    private void clearTextFields()
+    {
+        leftTextFields[0].setText("");
+        leftTextFields[1].setText("");
+        leftTextFields[2].setText("");
+        leftTextFields[3].setText("");
     }
 
     private void clearTextArea()
