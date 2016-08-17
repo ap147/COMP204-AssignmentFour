@@ -67,27 +67,23 @@ public class Project extends Application
         grid.setHgap(10);
         grid.setGridLinesVisible(true);
         ColumnConstraints column1 = new ColumnConstraints();
-        column1.setPercentWidth(33.33);
+        column1.setPercentWidth(16.665);
+        ColumnConstraints column15 = new ColumnConstraints();
+        column15.setPercentWidth(16.665);
         ColumnConstraints column2 = new ColumnConstraints();
         column2.setPercentWidth(33.33);
         ColumnConstraints column3 = new ColumnConstraints();
         column3.setPercentWidth(33.33);
 
-        grid.getColumnConstraints().addAll(column1, column2,column3);
+        grid.getColumnConstraints().addAll(column1,column15, column2,column3);
 
-        RowConstraints row1 = new RowConstraints();
-        row1.setPercentHeight(5);
-        RowConstraints row2 = new RowConstraints();
-        row2.setPercentHeight(5);
-        RowConstraints row3 = new RowConstraints();
-        row3.setPercentHeight(5);
-        RowConstraints row4 = new RowConstraints();
-        row4.setPercentHeight(5);
-        RowConstraints row5 = new RowConstraints();
-        row5.setPercentHeight(5);
-        RowConstraints row6 = new RowConstraints();
-        row6.setPercentHeight(5);
-       grid.getRowConstraints().addAll(row1,row2,row3,row4,row5,row6);
+        for(int x =0; x < 20; x++)
+        {
+            RowConstraints row1 = new RowConstraints();
+            row1.setPercentHeight(5);
+            grid.getRowConstraints().add(row1);
+        }
+
     }
     private void setupTextField()
     {
@@ -98,23 +94,21 @@ public class Project extends Application
     }
     private void setupLabels()
     {
-        Label labelProductName = new Label("Product Name         : ");
-        Label labelProductQuantity = new Label("Product Quantity : ");
-        Label labelUnitCost = new Label("Unit Cost               : ");
-        Label labelTotalCost= new Label("Total Cost              : ");
+        Label labelProductName = new Label("Product Name       : ");
+        Label labelProductQuantity = new Label("Product Quantity  : ");
+        Label labelUnitCost = new Label("Unit Cost              : ");
+        Label labelTotalCost= new Label("Total Cost             : ");
 
-        //grid.add(labelProductName, 0,1);
         GridPane.setConstraints(labelProductName,0,0);
-       // grid.add(labelProductQuantity,0,2);
         GridPane.setConstraints(labelProductQuantity,0,1);
-        //grid.add(labelUnitCost, 0,3);
         GridPane.setConstraints(labelUnitCost,0,2);
-        grid.getChildren().addAll(labelProductName,labelProductQuantity,labelUnitCost);
+        GridPane.setConstraints(labelTotalCost,0,3);
+        grid.getChildren().addAll(labelProductName,labelProductQuantity,labelUnitCost,labelTotalCost);
     }
     private void setupTextArea()
     {
         textArea.setEditable(false);
-        GridPane.setConstraints(textArea,2,0, 1,6);
+        GridPane.setConstraints(textArea,3,0, 1,20);
         grid.getChildren().add(textArea);
     }
     private void setupButton()
@@ -129,7 +123,7 @@ public class Project extends Application
                 textArea.setText(getRandomNumber()+"");
             }
         });
-        GridPane.setConstraints(BclearNAdd,0,3);
+        GridPane.setConstraints(BclearNAdd,0,4);
         grid.getChildren().add(BclearNAdd);
 
     }
