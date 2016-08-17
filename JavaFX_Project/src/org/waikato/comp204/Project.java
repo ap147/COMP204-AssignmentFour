@@ -68,14 +68,20 @@ public class Project extends Application
 
         ColumnConstraints column1 = new ColumnConstraints();
         column1.setPercentWidth(16.665);
-        ColumnConstraints column15 = new ColumnConstraints();
-        column15.setPercentWidth(16.665);
+        ColumnConstraints column1point5 = new ColumnConstraints();
+        column1point5.setPercentWidth(16.665);
+        ColumnConstraints column2point25 = new ColumnConstraints();
+        column2point25.setPercentWidth(8.3325);
+        ColumnConstraints column2point50 = new ColumnConstraints();
+        column2point50.setPercentWidth(8.3325);
+        ColumnConstraints column2point75 = new ColumnConstraints();
+        column2point75.setPercentWidth(8.3325);
         ColumnConstraints column2 = new ColumnConstraints();
-        column2.setPercentWidth(33.33);
+        column2.setPercentWidth(8.3325);
         ColumnConstraints column3 = new ColumnConstraints();
         column3.setPercentWidth(33.33);
 
-        grid.getColumnConstraints().addAll(column1,column15, column2,column3);
+        grid.getColumnConstraints().addAll(column1,column1point5,column2point25,column2point50,column2point75, column2,column3);
 
         for(int x =0; x < 20; x++)
         {
@@ -119,7 +125,7 @@ public class Project extends Application
     private void setupTextArea()
     {
         textArea.setEditable(false);
-        GridPane.setConstraints(textArea,3,0, 1,20);
+        GridPane.setConstraints(textArea,6,0, 1,20);
         grid.getChildren().add(textArea);
     }
     private void setupButton()
