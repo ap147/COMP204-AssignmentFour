@@ -2,7 +2,7 @@ package org.waikato.comp204;
 //https://www.youtube.com/watch?v=QGGE0WsUslc
 //http://stackoverflow.com/questions/32866937/how-to-check-if-textfield-is-empty
 //http://docs.oracle.com/javafx/2/layout/builtin_layouts.html
-
+//https://www.youtube.com/watch?v=YtKF1JKtRWM
 import javafx.application.Application;
 import javafx.beans.property.SimpleFloatProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -25,6 +25,9 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.lang.Object;
 
@@ -34,12 +37,16 @@ public class Project extends Application
     private static GridPane grid = new GridPane();
     private TextArea textArea = new TextArea();
 
+    private TextField[] leftTextFields = new TextField[4];
+
     ObservableList<Item> observable = FXCollections.observableArrayList();
     @Override
     public void start(Stage primaryStage) {
         primaryStage.setTitle("JavaFX Project");
 
         setupGrid();
+        setupTextArea();
+        setupLabels();
         setupTextField();
         setupButton();
 
@@ -55,6 +62,9 @@ public class Project extends Application
     }
     private void setupGrid()
     {
+        grid.setPadding(new Insets(10,10,10,10));
+        grid.setVgap(8);
+        grid.setHgap(10);
         grid.setGridLinesVisible(true);
         ColumnConstraints column1 = new ColumnConstraints();
         column1.setPercentWidth(33.33);
@@ -64,18 +74,48 @@ public class Project extends Application
         column3.setPercentWidth(33.33);
 
         grid.getColumnConstraints().addAll(column1, column2,column3);
+
         RowConstraints row1 = new RowConstraints();
-        row1.setPercentHeight(500);
+        row1.setPercentHeight(5);
         RowConstraints row2 = new RowConstraints();
-        row2.setPercentHeight(500);
+        row2.setPercentHeight(5);
         RowConstraints row3 = new RowConstraints();
-        row3.setPercentHeight(500);
-        grid.getRowConstraints().addAll(row1,row2,row3);
+        row3.setPercentHeight(5);
+        RowConstraints row4 = new RowConstraints();
+        row4.setPercentHeight(5);
+        RowConstraints row5 = new RowConstraints();
+        row5.setPercentHeight(5);
+        RowConstraints row6 = new RowConstraints();
+        row6.setPercentHeight(5);
+       grid.getRowConstraints().addAll(row1,row2,row3,row4,row5,row6);
     }
     private void setupTextField()
     {
+        for(int x =0; x < 4; x++)
+        {
+
+        }
+    }
+    private void setupLabels()
+    {
+        Label labelProductName = new Label("Product Name         : ");
+        Label labelProductQuantity = new Label("Product Quantity : ");
+        Label labelUnitCost = new Label("Unit Cost               : ");
+        Label labelTotalCost= new Label("Total Cost              : ");
+
+        //grid.add(labelProductName, 0,1);
+        GridPane.setConstraints(labelProductName,0,0);
+       // grid.add(labelProductQuantity,0,2);
+        GridPane.setConstraints(labelProductQuantity,0,1);
+        //grid.add(labelUnitCost, 0,3);
+        GridPane.setConstraints(labelUnitCost,0,2);
+        grid.getChildren().addAll(labelProductName,labelProductQuantity,labelUnitCost);
+    }
+    private void setupTextArea()
+    {
         textArea.setEditable(false);
-        grid.add(textArea, 2, 0,1,3);
+        GridPane.setConstraints(textArea,2,0, 1,6);
+        grid.getChildren().add(textArea);
     }
     private void setupButton()
     {
@@ -89,7 +129,7 @@ public class Project extends Application
                 textArea.setText(getRandomNumber()+"");
             }
         });
-
+        GridPane.setConstraints(BclearNAdd,0,3);
         grid.getChildren().add(BclearNAdd);
 
     }
