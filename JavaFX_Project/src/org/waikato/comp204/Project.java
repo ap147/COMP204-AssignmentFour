@@ -35,7 +35,9 @@ public class Project extends Application
 {
     private static GridPane grid = new GridPane();
     private TextArea textArea = new TextArea();
+
     private double currentItemTotal;
+
     private TextField[] leftTextFields = new TextField[4];
 
     ObservableList<Item> observable = FXCollections.observableArrayList();
@@ -203,6 +205,18 @@ public class Project extends Application
             textArea.appendText("Unit Cost : $" + temp.getUnitCost() + newline);
             textArea.appendText(newline);
         }
+        textArea.appendText(newline);
+        textArea.appendText("Grand Total : $" + getTotalsTotal());
+    }
+    //Adds the totals of all items in list and returns it
+    private double getTotalsTotal()
+    {
+        double totalsTotal = 0;
+        for(int x =0; x < observable.size(); x++)
+        {
+            totalsTotal = totalsTotal + observable.get(x).getToal();
+        }
+        return totalsTotal;
     }
     private void clearTextFields()
     {
