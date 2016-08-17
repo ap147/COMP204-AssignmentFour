@@ -168,7 +168,8 @@ public class Project extends Application
         System.out.println("Save Item");
         Item temp = new Item(ProductName, Quantity, Cost, Total);
         observable.add(temp);
-        updateTextArea();
+        updateReceipt();
+        //updateTextArea();
         clearTextFields();
     }
 
@@ -207,6 +208,16 @@ public class Project extends Application
         }
         textArea.appendText(newline);
         textArea.appendText("Grand Total : $" + getTotalsTotal());
+    }
+    private void updateReceipt()
+    {
+        textArea.setText("");
+        for(int x= 0; x < observable.size(); x++)
+        {
+            textArea.appendText("\n");
+            Item temp = observable.get(x);
+            textArea.appendText(temp.getName() +" $"+ temp.getUnitCost() +" x" + temp.getQuantity() + "   $"+ temp.getToal());
+        }
     }
     //Adds the totals of all items in list and returns it
     private double getTotalsTotal()
