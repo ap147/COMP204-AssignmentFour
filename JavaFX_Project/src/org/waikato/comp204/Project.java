@@ -102,11 +102,16 @@ public class Project extends Application
             GridPane.setConstraints(Temp,1,x);
             grid.getChildren().add(Temp);
         }
-        leftTextFields[3].setEditable(false);
 
         //Product quantity / Unit Cost
         leftTextFields[1].setOnKeyReleased(event -> updateTotal());
         leftTextFields[2].setOnKeyReleased(event -> updateTotal());
+        leftTextFields[3].setOnKeyReleased(event -> {
+            if(CheckIfNum(leftTextFields[3].getText(), true)) {
+                System.out.println("Total Being altered");
+                updateDiscountTotal(Double.parseDouble(leftTextFields[3].getText()));
+            }
+        });
 
     }
     private void setupLabels()
@@ -136,13 +141,10 @@ public class Project extends Application
             {
                 System.out.println("Correct Input");
                 String inputItemName = leftTextFields[0].getText();
-                System.out.println(inputItemName);
                 int inputItemQuantity = Integer.parseInt(leftTextFields[1].getText());
-                System.out.println(inputItemQuantity);
                 float inputUnitCost = (float)Double.parseDouble(leftTextFields[2].getText());
-                System.out.println(inputUnitCost);
-
                 saveItem(inputItemName,inputItemQuantity,inputUnitCost, currentItemTotal);
+                System.out.println(currentItemTotal);
             }
         });
 
@@ -163,7 +165,7 @@ public class Project extends Application
     }
     private boolean TextFieldChecker()
     {
-        if(leftTextFields[0].getText() != null && CheckIfNum(leftTextFields[1].getText(),false) && CheckIfNum(leftTextFields[2].getText(),true))
+        if(leftTextFields[0].getText() != null && CheckIfNum(leftTextFields[1].getText(),false) && CheckIfNum(leftTextFields[2].getText(),true) && CheckIfNum(leftTextFields[3].getText(),true))
         {
             return true;
         }
@@ -197,7 +199,10 @@ public class Project extends Application
         }
 
     }
-
+    private void updateDiscountTotal(double _DiscountedTotal)
+    {
+        currentItemTotal = _DiscountedTotal;
+    }
     private void updateTextArea()
     {
         textArea.setText("");
@@ -223,7 +228,14 @@ public class Project extends Application
             Item temp = observable.get(x);
             textArea.appendText(temp.getName());
             textArea.appendText("\n");
-            textArea.appendText("$"+ temp.getUnitCost() +" Each  X" + temp.getQuantity() + "   $"+ temp.getToal());
+            if(temp.getToal() == (temp.getUnitCost() * temp.getQuantity()) )
+            {
+                textArea.appendText("$" + temp.getUnitCost() + " Each  X" + temp.getQuantity() + "   $" + temp.getToal());
+            }
+            else
+            {
+                textArea.appendText("$" + temp.getUnitCost() + " Each  X" + temp.getQuantity() + "   $" + temp.getToal()+"*");
+            }
             textArea.appendText("\n");
         }
         textArea.appendText("\n");
