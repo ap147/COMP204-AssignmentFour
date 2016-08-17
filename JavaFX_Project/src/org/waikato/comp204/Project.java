@@ -26,8 +26,7 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-import java.util.ArrayList;
-import java.util.List;
+
 import java.util.Random;
 import java.lang.Object;
 
@@ -62,10 +61,12 @@ public class Project extends Application
     }
     private void setupGrid()
     {
+        grid.setGridLinesVisible(true);
+
         grid.setPadding(new Insets(10,10,10,10));
         grid.setVgap(8);
         grid.setHgap(10);
-        grid.setGridLinesVisible(true);
+
         ColumnConstraints column1 = new ColumnConstraints();
         column1.setPercentWidth(16.665);
         ColumnConstraints column15 = new ColumnConstraints();
@@ -87,10 +88,21 @@ public class Project extends Application
     }
     private void setupTextField()
     {
+        TextField Temp;
+        //Creating TextBoxes, Positioning them, Storing in list
         for(int x =0; x < 4; x++)
         {
-
+            Temp = new TextField();
+            leftTextFields[x] = Temp;
+            GridPane.setConstraints(Temp,1,x);
+            grid.getChildren().add(Temp);
         }
+        leftTextFields[3].setEditable(false);
+
+        //Product quantity / Unit Cost
+        leftTextFields[1].setOnKeyReleased(event -> updateTotal());
+        leftTextFields[2].setOnKeyReleased(event -> updateTotal());
+
     }
     private void setupLabels()
     {
@@ -134,6 +146,23 @@ public class Project extends Application
         observable.add(x);
         updateTextArea();
     }
+    private void updateTotal()
+    {
+        if(CheckIfNum(leftTextFields[2].getText(), true) == true && CheckIfNum(leftTextFields[1].getText(),false) == true)
+        {
+            int quantity = Integer.parseInt(leftTextFields[1].getText());
+            Double price = Double.parseDouble(leftTextFields[2].getText());
+
+            Double Total = quantity * price;
+            leftTextFields[3].setText("$"+Total);
+        }
+        else
+        {
+            leftTextFields[3].setText("$0.0");
+        }
+
+    }
+
     private void updateTextArea()
     {
         textArea.setText("");
@@ -160,10 +189,34 @@ public class Project extends Application
         return ran.nextInt();
     }
 
+    //retusn true if passed in value is an number, where being double or int
+    private static boolean CheckIfNum(String num, boolean isitPrice)
+    {
+        try{
+            //if its a double
+            if(isitPrice)
+            {
+                //try turning it to a double
+                double x = Double.parseDouble(num);
+                return true;
+            }
+            else
+            {
+                int x = Integer.parseInt(num);
+                return true;
+            }
+        }
+        catch(Exception e)
+        {
+        }
+        return false;
+    }
+
     public static class Item {
         public final SimpleStringProperty name;
         public final SimpleIntegerProperty quantity;
         public final SimpleFloatProperty unitCost;
+        private double Total;
 
         public Item(String name, int quantity, float unitCost) {
             this.name = new SimpleStringProperty(name);
@@ -174,6 +227,9 @@ public class Project extends Application
         public String getName() { return this.name.get(); }
         public int getQuantity() { return this.quantity.get(); }
         public float getUnitCost() { return this.unitCost.get(); }
+        public double getToal(){return Total;}
+        public void setTotal(double _total){Total = _total;}
+
     }
 }
 
