@@ -4,6 +4,7 @@ package org.waikato.comp204;
 //http://docs.oracle.com/javafx/2/layout/builtin_layouts.html
 //https://www.youtube.com/watch?v=YtKF1JKtRWM
 import javafx.application.Application;
+import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleFloatProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -106,13 +107,6 @@ public class Project extends Application
         //Product quantity / Unit Cost
         leftTextFields[1].setOnKeyReleased(event -> updateTotal());
         leftTextFields[2].setOnKeyReleased(event -> updateTotal());
-        leftTextFields[3].setOnKeyReleased(event -> {
-            if(CheckIfNum(leftTextFields[3].getText(), true)) {
-                System.out.println("Total Being altered");
-                updateDiscountTotal(Double.parseDouble(leftTextFields[3].getText()));
-            }
-        });
-
     }
     private void setupLabels()
     {
@@ -143,8 +137,8 @@ public class Project extends Application
                 String inputItemName = leftTextFields[0].getText();
                 int inputItemQuantity = Integer.parseInt(leftTextFields[1].getText());
                 float inputUnitCost = (float)Double.parseDouble(leftTextFields[2].getText());
-                saveItem(inputItemName,inputItemQuantity,inputUnitCost, currentItemTotal);
-                System.out.println(currentItemTotal);
+                Double inputTotal = Double.parseDouble(leftTextFields[3].getText());
+                saveItem(inputItemName,inputItemQuantity,inputUnitCost, inputTotal);
             }
         });
 
@@ -165,10 +159,13 @@ public class Project extends Application
     }
     private boolean TextFieldChecker()
     {
+        System.out.println("TextField CHecker");
         if(leftTextFields[0].getText() != null && CheckIfNum(leftTextFields[1].getText(),false) && CheckIfNum(leftTextFields[2].getText(),true) && CheckIfNum(leftTextFields[3].getText(),true))
         {
+            System.out.println("True");
             return true;
         }
+        System.out.println("False");
         return false;
     }
     private void saveItem(String ProductName, int Quantity, float Cost, Double Total)
@@ -183,19 +180,16 @@ public class Project extends Application
 
     private void updateTotal()
     {
-        if(CheckIfNum(leftTextFields[2].getText(), true) == true && CheckIfNum(leftTextFields[1].getText(),false) == true)
-        {
+        if(CheckIfNum(leftTextFields[2].getText(), true) == true && CheckIfNum(leftTextFields[1].getText(),false) == true) {
             int quantity = Integer.parseInt(leftTextFields[1].getText());
             Double price = Double.parseDouble(leftTextFields[2].getText());
 
             Double Total = quantity * price;
-            leftTextFields[3].setText("$"+Total);
-            currentItemTotal = Total;
+            leftTextFields[3].setText(""+Total);
         }
         else
         {
-            leftTextFields[3].setText("$0.0");
-            currentItemTotal = 0;
+            leftTextFields[3].setText("0.0");
         }
 
     }
