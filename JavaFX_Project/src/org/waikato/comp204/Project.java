@@ -35,7 +35,7 @@ public class Project extends Application
 {
     private static GridPane grid = new GridPane();
     private TextArea textArea = new TextArea();
-
+    private double currentItemTotal;
     private TextField[] leftTextFields = new TextField[4];
 
     ObservableList<Item> observable = FXCollections.observableArrayList();
@@ -48,9 +48,6 @@ public class Project extends Application
         setupLabels();
         setupTextField();
         setupButton();
-
-        addToList("a",1,1);
-        addToList("b",2,2);
 
         Scene scene = new Scene(grid, 900, 600);
         primaryStage.setScene(scene);
@@ -125,9 +122,24 @@ public class Project extends Application
     }
     private void setupButton()
     {
-        Button BclearNAdd = new Button();
+        Button BAdd = new Button("Add");
+        BAdd.setOnAction(event -> {
+            if(TextFieldChecker())
+            {
+                System.out.println("Correct Input");
+                String inputItemName = leftTextFields[0].getText();
+                System.out.println(inputItemName);
+                int inputItemQuantity = Integer.parseInt(leftTextFields[1].getText());
+                System.out.println(inputItemQuantity);
+                float inputUnitCost = (float)Double.parseDouble(leftTextFields[2].getText());
+                System.out.println(inputUnitCost);
 
-        BclearNAdd.setText("Clear");
+                saveItem(inputItemName,inputItemQuantity,inputUnitCost, currentItemTotal);
+            }
+        });
+
+        Button BclearNAdd = new Button("Clear");
+
         BclearNAdd.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -135,17 +147,29 @@ public class Project extends Application
                 textArea.setText(getRandomNumber()+"");
             }
         });
+
+        GridPane.setConstraints(BAdd,1,4);
         GridPane.setConstraints(BclearNAdd,0,4);
-        grid.getChildren().add(BclearNAdd);
+        grid.getChildren().addAll(BclearNAdd,BAdd);
 
     }
-
-    private void addToList(String _name,int _quantity,float _unitCost)
+    private boolean TextFieldChecker()
     {
-        Item x = new Item(_name, _quantity, _unitCost);
-        observable.add(x);
-        updateTextArea();
+        if(leftTextFields[0].getText() != null && CheckIfNum(leftTextFields[1].getText(),false) && CheckIfNum(leftTextFields[2].getText(),true))
+        {
+            return true;
+        }
+        return false;
     }
+    private void saveItem(String ProductName, int Quantity, float Cost, Double Total)
+    {
+        System.out.println("Save Item");
+        Item temp = new Item(ProductName, Quantity, Cost, Total);
+        observable.add(temp);
+        updateTextArea();
+
+    }
+
     private void updateTotal()
     {
         if(CheckIfNum(leftTextFields[2].getText(), true) == true && CheckIfNum(leftTextFields[1].getText(),false) == true)
@@ -155,10 +179,12 @@ public class Project extends Application
 
             Double Total = quantity * price;
             leftTextFields[3].setText("$"+Total);
+            currentItemTotal = Total;
         }
         else
         {
             leftTextFields[3].setText("$0.0");
+            currentItemTotal = 0;
         }
 
     }
@@ -222,6 +248,12 @@ public class Project extends Application
             this.name = new SimpleStringProperty(name);
             this.quantity = new SimpleIntegerProperty(quantity);
             this.unitCost = new SimpleFloatProperty(unitCost);
+        }
+        public Item(String name, int quantity, float unitCost, double Total) {
+            this.name = new SimpleStringProperty(name);
+            this.quantity = new SimpleIntegerProperty(quantity);
+            this.unitCost = new SimpleFloatProperty(unitCost);
+            this.Total = Total;
         }
 
         public String getName() { return this.name.get(); }
