@@ -4,10 +4,7 @@ package org.waikato.comp204;
 //http://docs.oracle.com/javafx/2/layout/builtin_layouts.html
 //https://www.youtube.com/watch?v=YtKF1JKtRWM
 import javafx.application.Application;
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.SimpleFloatProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -15,10 +12,8 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -26,8 +21,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-
-
 import java.util.Random;
 import java.lang.Object;
 
@@ -41,6 +34,7 @@ public class Project extends Application
 
     private TextField[] leftTextFields = new TextField[4];
 
+    private TableView<Item> table = new TableView<Item>();
     ObservableList<Item> observable = FXCollections.observableArrayList();
     @Override
     public void start(Stage primaryStage) {
@@ -51,6 +45,7 @@ public class Project extends Application
         setupLabels();
         setupTextField();
         setupButton();
+        setupTable();
 
         Scene scene = new Scene(grid, 900, 600);
         primaryStage.setScene(scene);
@@ -71,18 +66,12 @@ public class Project extends Application
         column1.setPercentWidth(16.665);
         ColumnConstraints column1point5 = new ColumnConstraints();
         column1point5.setPercentWidth(16.665);
-        ColumnConstraints column2point25 = new ColumnConstraints();
-        column2point25.setPercentWidth(8.3325);
-        ColumnConstraints column2point50 = new ColumnConstraints();
-        column2point50.setPercentWidth(8.3325);
-        ColumnConstraints column2point75 = new ColumnConstraints();
-        column2point75.setPercentWidth(8.3325);
         ColumnConstraints column2 = new ColumnConstraints();
-        column2.setPercentWidth(8.3325);
+        column2.setPercentWidth(33.33);
         ColumnConstraints column3 = new ColumnConstraints();
         column3.setPercentWidth(33.33);
 
-        grid.getColumnConstraints().addAll(column1,column1point5,column2point25,column2point50,column2point75, column2,column3);
+        grid.getColumnConstraints().addAll(column1,column1point5, column2,column3);
 
         for(int x =0; x < 20; x++)
         {
@@ -90,7 +79,6 @@ public class Project extends Application
             row1.setPercentHeight(5);
             grid.getRowConstraints().add(row1);
         }
-
     }
     private void setupTextField()
     {
@@ -124,7 +112,7 @@ public class Project extends Application
     private void setupTextArea()
     {
         textArea.setEditable(false);
-        GridPane.setConstraints(textArea,6,0, 1,20);
+        GridPane.setConstraints(textArea,3,0, 1,20);
         grid.getChildren().add(textArea);
     }
     private void setupButton()
@@ -157,6 +145,33 @@ public class Project extends Application
         grid.getChildren().addAll(BclearNAdd,BAdd);
 
     }
+    private void setupTable()
+    {
+        System.out.println("Entering setupTable()");
+        table.setEditable(true);
+        TableColumn itemName = new TableColumn("Name");
+        TableColumn itemQuantity = new TableColumn("Quantity");
+        TableColumn itemUnit = new TableColumn("Cost");
+        TableColumn itemTotal = new TableColumn("Total Cost");
+        itemName.setCellValueFactory(new PropertyValueFactory<Item, String>("name"));
+        itemQuantity.setCellValueFactory(new PropertyValueFactory<Item, String>("quantity"));
+        itemUnit.setCellValueFactory(new PropertyValueFactory<Item, String>("unitCost"));
+        itemTotal.setCellValueFactory(new PropertyValueFactory<Item, String>("Total"));
+        System.out.println("Mid setupTable()");
+        table.setItems(observable);
+        table.getColumns().addAll(itemName,itemQuantity, itemUnit, itemTotal);
+      //  VBox vbox = new VBox();
+        //vbox.getChildren().add(table);
+
+      //  System.out.println("End setupTable()");
+        grid.add(table,2,0,1,20);
+       // grid.add(vbox,2,0,1,20);
+       // grid.add(table,2,0,0,20);
+        //GridPane.setConstraints(table,2,0,0,20);
+        System.out.println("End setupTable()");
+        //grid.getChildren().add(table);
+
+    }
     private boolean TextFieldChecker()
     {
         System.out.println("TextField CHecker");
@@ -172,6 +187,7 @@ public class Project extends Application
     {
         System.out.println("Save Item");
         Item temp = new Item(ProductName, Quantity, Cost, Total);
+        System.out.println(temp.getToal());
         observable.add(temp);
         updateReceipt();
         //updateTextArea();
@@ -197,23 +213,7 @@ public class Project extends Application
     {
         currentItemTotal = _DiscountedTotal;
     }
-    private void updateTextArea()
-    {
-        textArea.setText("");
-        System.out.println("List size : "+ observable.size());
-        String newline = "\n";
-        for(int x =0; x <observable.size(); x++)
-        {
-            System.out.println(x);
-            Item temp = observable.get(x);
-            textArea.appendText("Name      : " + temp.getName() +newline);
-            textArea.appendText("Quantity  : " + temp.getQuantity()+newline);
-            textArea.appendText("Unit Cost : $" + temp.getUnitCost() + newline);
-            textArea.appendText(newline);
-        }
-        textArea.appendText(newline);
-        textArea.appendText("Grand Total : $" + getTotalsTotal());
-    }
+
     private void updateReceipt()
     {
         textArea.setText("");
@@ -293,7 +293,7 @@ public class Project extends Application
         public final SimpleStringProperty name;
         public final SimpleIntegerProperty quantity;
         public final SimpleFloatProperty unitCost;
-        private double Total;
+        public double Total;
 
         public Item(String name, int quantity, float unitCost) {
             this.name = new SimpleStringProperty(name);
