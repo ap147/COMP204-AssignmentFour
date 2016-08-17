@@ -214,10 +214,17 @@ public class Project extends Application
         textArea.setText("");
         for(int x= 0; x < observable.size(); x++)
         {
-            textArea.appendText("\n");
             Item temp = observable.get(x);
-            textArea.appendText(temp.getName() +" $"+ temp.getUnitCost() +" x" + temp.getQuantity() + "   $"+ temp.getToal());
+            textArea.appendText(temp.getName());
+            textArea.appendText("\n");
+            textArea.appendText("$"+ temp.getUnitCost() +" Each  X" + temp.getQuantity() + "   $"+ temp.getToal());
+            textArea.appendText("\n");
         }
+        textArea.appendText("\n");
+        textArea.appendText("\n");
+
+        textArea.appendText("Grand Total : $" + getTotalsTotal());
+
     }
     //Adds the totals of all items in list and returns it
     private double getTotalsTotal()
