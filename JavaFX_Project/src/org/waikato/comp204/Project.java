@@ -147,7 +147,6 @@ public class Project extends Application
     }
     private void setupTable()
     {
-        System.out.println("Entering setupTable()");
         table.setEditable(true);
         TableColumn itemName = new TableColumn("Name");
         TableColumn itemQuantity = new TableColumn("Quantity");
@@ -156,26 +155,17 @@ public class Project extends Application
         itemName.setCellValueFactory(new PropertyValueFactory<Item, String>("name"));
         itemQuantity.setCellValueFactory(new PropertyValueFactory<Item, String>("quantity"));
         itemUnit.setCellValueFactory(new PropertyValueFactory<Item, String>("unitCost"));
-        itemTotal.setCellValueFactory(new PropertyValueFactory<Item, String>("Total"));
-        System.out.println("Mid setupTable()");
+        itemTotal.setCellValueFactory(new PropertyValueFactory<Item, String>("total"));
+        //giving table list to get information from
         table.setItems(observable);
         table.getColumns().addAll(itemName,itemQuantity, itemUnit, itemTotal);
-      //  VBox vbox = new VBox();
-        //vbox.getChildren().add(table);
 
-      //  System.out.println("End setupTable()");
         grid.add(table,2,0,1,20);
-       // grid.add(vbox,2,0,1,20);
-       // grid.add(table,2,0,0,20);
-        //GridPane.setConstraints(table,2,0,0,20);
-        System.out.println("End setupTable()");
-        //grid.getChildren().add(table);
-
     }
     private boolean TextFieldChecker()
     {
         System.out.println("TextField CHecker");
-        if(leftTextFields[0].getText() != null && CheckIfNum(leftTextFields[1].getText(),false) && CheckIfNum(leftTextFields[2].getText(),true) && CheckIfNum(leftTextFields[3].getText(),true))
+        if(!leftTextFields[0].getText().trim().isEmpty() && CheckIfNum(leftTextFields[1].getText(),false) && CheckIfNum(leftTextFields[2].getText(),true) && CheckIfNum(leftTextFields[3].getText(),true))
         {
             System.out.println("True");
             return true;
@@ -208,10 +198,6 @@ public class Project extends Application
             leftTextFields[3].setText("0.0");
         }
 
-    }
-    private void updateDiscountTotal(double _DiscountedTotal)
-    {
-        currentItemTotal = _DiscountedTotal;
     }
 
     private void updateReceipt()
@@ -293,25 +279,21 @@ public class Project extends Application
         public final SimpleStringProperty name;
         public final SimpleIntegerProperty quantity;
         public final SimpleFloatProperty unitCost;
-        public double Total;
+        public final SimpleDoubleProperty total;
 
-        public Item(String name, int quantity, float unitCost) {
+
+        public Item(String name, int quantity, float unitCost, double total) {
             this.name = new SimpleStringProperty(name);
             this.quantity = new SimpleIntegerProperty(quantity);
             this.unitCost = new SimpleFloatProperty(unitCost);
-        }
-        public Item(String name, int quantity, float unitCost, double Total) {
-            this.name = new SimpleStringProperty(name);
-            this.quantity = new SimpleIntegerProperty(quantity);
-            this.unitCost = new SimpleFloatProperty(unitCost);
-            this.Total = Total;
+            this.total = new SimpleDoubleProperty(total);
+            System.out.println(total);
         }
 
         public String getName() { return this.name.get(); }
         public int getQuantity() { return this.quantity.get(); }
-        public float getUnitCost() { return this.unitCost.get(); }
-        public double getToal(){return Total;}
-        public void setTotal(double _total){Total = _total;}
+        public double getUnitCost() { return this.unitCost.get(); }
+        public double getToal(){return total.getValue();}
 
     }
 }
