@@ -125,7 +125,7 @@ public class Project extends Application
                 String inputItemName = leftTextFields[0].getText();
                 int inputItemQuantity = Integer.parseInt(leftTextFields[1].getText());
                 float inputUnitCost = (float)Double.parseDouble(leftTextFields[2].getText());
-                Double inputTotal = Double.parseDouble(leftTextFields[3].getText());
+                float inputTotal = Float.parseFloat(leftTextFields[3].getText());
                 saveItem(inputItemName,inputItemQuantity,inputUnitCost, inputTotal);
             }
         });
@@ -155,7 +155,9 @@ public class Project extends Application
         itemName.setCellValueFactory(new PropertyValueFactory<Item, String>("name"));
         itemQuantity.setCellValueFactory(new PropertyValueFactory<Item, String>("quantity"));
         itemUnit.setCellValueFactory(new PropertyValueFactory<Item, String>("unitCost"));
+
         itemTotal.setCellValueFactory(new PropertyValueFactory<Item, String>("total"));
+
         //giving table list to get information from
         table.setItems(observable);
         table.getColumns().addAll(itemName,itemQuantity, itemUnit, itemTotal);
@@ -173,7 +175,7 @@ public class Project extends Application
         System.out.println("False");
         return false;
     }
-    private void saveItem(String ProductName, int Quantity, float Cost, Double Total)
+    private void saveItem(String ProductName, int Quantity, float Cost, float Total)
     {
         System.out.println("Save Item");
         Item temp = new Item(ProductName, Quantity, Cost, Total);
@@ -260,7 +262,7 @@ public class Project extends Application
             if(isitPrice)
             {
                 //try turning it to a double
-                double x = Double.parseDouble(num);
+                float x = Float.parseFloat(num);
                 return true;
             }
             else
@@ -271,6 +273,7 @@ public class Project extends Application
         }
         catch(Exception e)
         {
+            System.out.println("Error caused in 'CheckIfNum' method:  " + e);
         }
         return false;
     }
@@ -279,14 +282,14 @@ public class Project extends Application
         public final SimpleStringProperty name;
         public final SimpleIntegerProperty quantity;
         public final SimpleFloatProperty unitCost;
-        public final SimpleDoubleProperty total;
+        public final SimpleFloatProperty total;
 
 
-        public Item(String name, int quantity, float unitCost, double total) {
+        public Item(String name, int quantity, float unitCost, float total) {
             this.name = new SimpleStringProperty(name);
             this.quantity = new SimpleIntegerProperty(quantity);
             this.unitCost = new SimpleFloatProperty(unitCost);
-            this.total = new SimpleDoubleProperty(total);
+            this.total = new SimpleFloatProperty(total);
             System.out.println(total);
         }
 
