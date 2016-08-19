@@ -179,7 +179,7 @@ public class Project extends Application
     {
         System.out.println("Save Item");
         Item temp = new Item(ProductName, Quantity, Cost, Total);
-        System.out.println(temp.getToal());
+        System.out.println(temp.getTotal());
         observable.add(temp);
         updateReceipt();
         //updateTextArea();
@@ -210,13 +210,13 @@ public class Project extends Application
             Item temp = observable.get(x);
             textArea.appendText(temp.getName());
             textArea.appendText("\n");
-            if(temp.getToal() == (temp.getUnitCost() * temp.getQuantity()) )
+            if(temp.getTotal() == (temp.getUnitCost() * temp.getQuantity()) )
             {
-                textArea.appendText("$" + temp.getUnitCost() + " Each  X" + temp.getQuantity() + "   $" + temp.getToal());
+                textArea.appendText("$" + temp.getUnitCost() + " Each  X" + temp.getQuantity() + "   $" + temp.getTotal());
             }
             else
             {
-                textArea.appendText("$" + temp.getUnitCost() + " Each  X" + temp.getQuantity() + "   $" + temp.getToal()+"*");
+                textArea.appendText("$" + temp.getUnitCost() + " Each  X" + temp.getQuantity() + "   $" + temp.getTotal()+"*");
             }
             textArea.appendText("\n");
         }
@@ -232,7 +232,7 @@ public class Project extends Application
         double totalsTotal = 0;
         for(int x =0; x < observable.size(); x++)
         {
-            totalsTotal = totalsTotal + observable.get(x).getToal();
+            totalsTotal = totalsTotal + observable.get(x).getTotal();
         }
         return totalsTotal;
     }
@@ -295,8 +295,8 @@ public class Project extends Application
 
         public String getName() { return this.name.get(); }
         public int getQuantity() { return this.quantity.get(); }
-        public double getUnitCost() { return this.unitCost.get(); }
-        public double getToal(){return total.getValue();}
+        public float getUnitCost() { return this.unitCost.get(); }
+        public float getTotal(){return this.total.get();}
 
     }
 }
