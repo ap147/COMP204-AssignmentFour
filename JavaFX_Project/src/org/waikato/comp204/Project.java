@@ -3,6 +3,8 @@ package org.waikato.comp204;
 //http://stackoverflow.com/questions/32866937/how-to-check-if-textfield-is-empty
 //http://docs.oracle.com/javafx/2/layout/builtin_layouts.html
 //https://www.youtube.com/watch?v=YtKF1JKtRWM
+//https://www.youtube.com/watch?v=lVdtE2BNd88
+
 import javafx.application.Application;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
@@ -22,6 +24,7 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.text.DecimalFormat;
 import java.util.Random;
 import java.lang.Object;
@@ -50,6 +53,10 @@ public class Project extends Application
         setupTable();
 
         Scene scene = new Scene(grid, 900, 600);
+        scene.getStylesheets().add(
+                getClass().getResource("stylesheet.css").toExternalForm()
+        );
+       // scene.getStylesheets().add("stylesheet.css");
         primaryStage.setScene(scene);
         primaryStage.show();
     }
@@ -121,34 +128,39 @@ public class Project extends Application
         //user total is not correct so change color
         if(CorrectTotal == 0 || UserTotal != CorrectTotal)
         {
-            //Change Text Color To Red
+            //Change background Color To Red
             System.out.println("Changing Total textbox text color to : RED ");
-
+            leftTextFields[3].setId("text-field-red");
         }
         else
         {
-            //Change Text Color To Black
+            //Change background Color To Black
             System.out.println("Changing Total textbox text color to : BLACK ");
-
+            leftTextFields[3].setId("text-field-white");
         }
 
     }
+    //Setups up item labels on grid (left hand side)
     private void setupLabels()
     {
         Label labelProductName = new Label("Product Name       : ");
         Label labelProductQuantity = new Label("Product Quantity  : ");
         Label labelUnitCost = new Label("Unit Cost              : ");
         Label labelTotalCost= new Label("Total Cost             : ");
-
+        //positioning labels
         GridPane.setConstraints(labelProductName,0,0);
         GridPane.setConstraints(labelProductQuantity,0,1);
         GridPane.setConstraints(labelUnitCost,0,2);
         GridPane.setConstraints(labelTotalCost,0,3);
+        //adding labels to grid
         grid.getChildren().addAll(labelProductName,labelProductQuantity,labelUnitCost,labelTotalCost);
     }
+    //Setup where recipt of items will be shown (right hand side)
     private void setupTextArea()
     {
+        //User cant edit recipt/textarea,
         textArea.setEditable(false);
+        //positioning and setting how many rows it will take then adding
         GridPane.setConstraints(textArea,3,0, 1,20);
         grid.getChildren().add(textArea);
     }
