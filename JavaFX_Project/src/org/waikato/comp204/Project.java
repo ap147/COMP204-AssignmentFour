@@ -95,6 +95,13 @@ public class Project extends Application
         //Product quantity / Unit Cost
         leftTextFields[1].setOnKeyReleased(event -> updateTotal());
         leftTextFields[2].setOnKeyReleased(event -> updateTotal());
+        leftTextFields[3].setOnKeyReleased(event -> TotlalAlterted());
+    }
+    public void TotlalAlterted()
+    {
+        //Check if unit cost/ Amount exist
+        
+
     }
     private void setupLabels()
     {
