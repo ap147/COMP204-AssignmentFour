@@ -101,8 +101,8 @@ public class Project extends Application
     }
     public void TotlalAlterted()
     {
-        float CorrectTotal = 0;
-        float UserTotal = Float.parseFloat(leftTextFields[3].getText());
+        double CorrectTotal = 0;
+        double UserTotal = Double.parseDouble(leftTextFields[3].getText());
         //If input in unit text box and amount text box is added, then calculate if correct
         if(!leftTextFields[1].getText().trim().isEmpty() && !leftTextFields[2].getText().trim().isEmpty())
         {
@@ -110,9 +110,10 @@ public class Project extends Application
             float amount = Float.parseFloat(leftTextFields[2].getText());
 
             CorrectTotal = units * amount;
+            CorrectTotal = Math.round(CorrectTotal * 100.0)/ 100.0;
 
-            DecimalFormat df = new DecimalFormat("#.##");
-            CorrectTotal = Float.parseFloat(df.format(CorrectTotal));
+            UserTotal = Math.round(UserTotal * 100.0)/ 100.0;
+
             System.out.println("Correct Total :" + CorrectTotal);
             System.out.println("User Input Total : " + UserTotal);
         }
@@ -121,12 +122,14 @@ public class Project extends Application
         if(CorrectTotal == 0 || UserTotal != CorrectTotal)
         {
             //Change Text Color To Red
+            System.out.println("Changing Total textbox text color to : RED ");
 
         }
         else
         {
             //Change Text Color To Black
-            
+            System.out.println("Changing Total textbox text color to : BLACK ");
+
         }
 
     }
@@ -158,9 +161,11 @@ public class Project extends Application
                 System.out.println("Correct Input");
                 String inputItemName = leftTextFields[0].getText();
                 int inputItemQuantity = Integer.parseInt(leftTextFields[1].getText());
-                float inputUnitCost = (float)Double.parseDouble(leftTextFields[2].getText());
-                float inputTotal = Float.parseFloat(leftTextFields[3].getText());
-                saveItem(inputItemName,inputItemQuantity,inputUnitCost, inputTotal);
+                float inputUnitCost = Float.parseFloat(leftTextFields[2].getText());
+                double inputTotal = Float.parseFloat(leftTextFields[3].getText());
+                inputTotal = Math.round(inputTotal * 100.0) / 100.0;
+
+                saveItem(inputItemName,inputItemQuantity,inputUnitCost, (float)inputTotal);
             }
         });
 
@@ -227,6 +232,7 @@ public class Project extends Application
             Double price = Double.parseDouble(leftTextFields[2].getText());
 
             Double Total = quantity * price;
+            Total = Math.round(Total * 100.0) / 100.0;
             leftTextFields[3].setText(""+Total);
         }
         else
@@ -244,7 +250,14 @@ public class Project extends Application
             Item temp = observable.get(x);
             textArea.appendText(temp.getName());
             textArea.appendText("\n");
-            if(temp.getTotal() == (temp.getUnitCost() * temp.getQuantity()) )
+
+            double Total = temp.getTotal();
+            Total = Math.round(Total * 100.0) / 100.0;
+
+            double CorrectTotal = temp.getUnitCost() * temp.getQuantity();
+            CorrectTotal = Math.round(CorrectTotal * 100.0) / 100.0;
+
+            if(CorrectTotal == Total)
             {
                 textArea.appendText("$" + temp.getUnitCost() + " Each  X" + temp.getQuantity() + "   $" + temp.getTotal());
             }
