@@ -281,6 +281,7 @@ public class Project extends Application
         {
             totalsTotal = totalsTotal + observable.get(x).getTotal();
         }
+        totalsTotal = Math.round(totalsTotal * 100.0)/100.0;
         return totalsTotal;
     }
     private void clearTextFields()
