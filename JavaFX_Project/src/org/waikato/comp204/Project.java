@@ -187,20 +187,9 @@ public class Project extends Application
             }
         });
 
-        Button BclearNAdd = new Button("Clear");
-
-        BclearNAdd.setOnAction(event -> {
-                  clearTextFields();
-                  clearTextArea();
-                  textArea.setText(getRandomNumber()+"");
-        });
-
-
 
         GridPane.setConstraints(BAdd,1,4);
-        GridPane.setConstraints(BclearNAdd,0,4);
-        grid.getChildren().addAll(BclearNAdd,BAdd);
-
+        grid.getChildren().add(BAdd);
     }
     private void setupTable()
     {
@@ -243,16 +232,18 @@ public class Project extends Application
         clearTextFields();
         leftTextFields[3].setId("text-field-white");
     }
-
+    //when unit or amount textbox value is altered, this method alters total textbox value accordingly
     private void updateTotal()
     {
+        //if input is valid (0-9)
         if(CheckIfNum(leftTextFields[2].getText(), true) == true && CheckIfNum(leftTextFields[1].getText(),false) == true) {
             int quantity = Integer.parseInt(leftTextFields[1].getText());
             Double price = Double.parseDouble(leftTextFields[2].getText());
-
+            //Calculate total (2dp)
             Double Total = quantity * price;
             Total = Math.round(Total * 100.0) / 100.0;
-            leftTextFields[3].setText(""+Total);
+            //set it as textfieldvalue
+            leftTextFields[3].setText("" + Total);
         }
         else
         {
@@ -260,22 +251,24 @@ public class Project extends Application
         }
 
     }
-
+    //update textarea when add button is pressed
     private void updateReceipt()
     {
+        //clearing textarea
         textArea.setText("");
+        //going through loop adding every item in recipt like fashion
         for(int x= 0; x < observable.size(); x++)
         {
             Item temp = observable.get(x);
             textArea.appendText(temp.getName());
             textArea.appendText("\n");
-
+            //working out total value of item is correct
             double Total = temp.getTotal();
             Total = Math.round(Total * 100.0) / 100.0;
 
             double CorrectTotal = temp.getUnitCost() * temp.getQuantity();
             CorrectTotal = Math.round(CorrectTotal * 100.0) / 100.0;
-
+            //if correct add present normally other wise add '*' at end
             if(CorrectTotal == Total)
             {
                 textArea.appendText("$" + temp.getUnitCost() + " Each  X" + temp.getQuantity() + "   $" + temp.getTotal());
@@ -290,18 +283,19 @@ public class Project extends Application
         textArea.appendText("\n");
         textArea.appendText("------------------------------");
         textArea.appendText("\n");
-
+        //Total of all items Totals
         textArea.appendText("Grand Total : $" + getTotalsTotal());
-
     }
     //Adds the totals of all items in list and returns it
     private double getTotalsTotal()
     {
         double totalsTotal = 0;
+        //looping through list adding up totals
         for(int x =0; x < observable.size(); x++)
         {
             totalsTotal = totalsTotal + observable.get(x).getTotal();
         }
+        //rounding totals total to 2dp
         totalsTotal = Math.round(totalsTotal * 100.0)/100.0;
         return totalsTotal;
     }
@@ -311,16 +305,6 @@ public class Project extends Application
         leftTextFields[1].setText("");
         leftTextFields[2].setText("");
         leftTextFields[3].setText("");
-    }
-
-    private void clearTextArea()
-    {
-        textArea.setText("");
-    }
-    private int getRandomNumber()
-    {
-        Random ran = new Random();
-        return ran.nextInt();
     }
 
     //retusn true if passed in value is an number, where being double or int
