@@ -22,8 +22,11 @@ import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import java.util.Random;
 
+
+//Creates a progam which allows the user to add an items with its genral information and presents it in a recipt and a orcganized table fashion.
 public class Project extends Application
 {
+    //Gets used to setout the layout of the program
     private static GridPane grid = new GridPane();
 
     //Recipt is printed on this, (Right side)
@@ -34,17 +37,21 @@ public class Project extends Application
     private TableView<Item> table = new TableView<Item>();
     //Stores all the added items
     ObservableList<Item> observable = FXCollections.observableArrayList();
+
+
+    //calls other methods to setup parts of the program at a time, then presents the program
     @Override
     public void start(Stage primaryStage) {
         primaryStage.setTitle("JavaFX Project");
 
+        //calling methods which setup parts of the program
         setupGrid();
         setupTextArea();
         setupLabels();
         setupTextField();
         setupButton();
         setupTable();
-
+        //setting size
         Scene scene = new Scene(grid, 900, 600);
         //Adding css file which changes label background,change text-field background color
         scene.getStylesheets().add(
@@ -56,6 +63,7 @@ public class Project extends Application
     public static void main(String[] args) {
         launch(args);
     }
+
     //Splits window into 3 halfs vertically, each one used for diffrent things (label/textfields, Table, TextArea)
     private void setupGrid()
     {
@@ -108,6 +116,7 @@ public class Project extends Application
         //if user alters total field check if textfield background color needs to be changed
         leftTextFields[3].setOnKeyReleased(event -> TotlalAlterted());
     }
+
     //Checks what user altered the total textfield too, if correct then make sure textfiedl color is white or else red
     public void TotlalAlterted()
     {
@@ -145,6 +154,7 @@ public class Project extends Application
             leftTextFields[3].setId("text-field-white");
         }
     }
+
     //Setups up item labels on grid (left hand side)
     private void setupLabels()
     {
@@ -160,6 +170,7 @@ public class Project extends Application
         //adding labels to grid
         grid.getChildren().addAll(labelProductName,labelProductQuantity,labelUnitCost,labelTotalCost);
     }
+
     //Setup where recipt of items will be shown (right hand side)
     private void setupTextArea()
     {
@@ -169,6 +180,7 @@ public class Project extends Application
         GridPane.setConstraints(textArea,3,0, 1,20);
         grid.getChildren().add(textArea);
     }
+
     //creates, positions add button which takes input from textfields and calls a method to save them to list
     private void setupButton()
     {
@@ -192,6 +204,7 @@ public class Project extends Application
         GridPane.setConstraints(BAdd,1,4);
         grid.getChildren().add(BAdd);
     }
+
     //sets out table (middle) , sets its coloums and links them to list and adds it to grid
     private void setupTable()
     {
@@ -213,6 +226,7 @@ public class Project extends Application
 
         grid.add(table,2,0,1,20);
     }
+
     //Checks all textfieldsm if they are all valid
     private boolean TextFieldChecker()
     {
@@ -226,6 +240,7 @@ public class Project extends Application
         System.out.println("False");
         return false;
     }
+
     //Creates a item using passed in parameters and saves in list
     private void saveItem(String ProductName, int Quantity, float Cost, float Total)
     {
@@ -238,6 +253,7 @@ public class Project extends Application
         clearTextFields();
         leftTextFields[3].setId("text-field-white");
     }
+
     //when unit or amount textbox value is altered, this method alters total textbox value accordingly
     private void updateTotal()
     {
@@ -255,8 +271,8 @@ public class Project extends Application
         {
             leftTextFields[3].setText("0.0");
         }
-
     }
+
     //update textarea when add button is pressed
     private void updateReceipt()
     {
@@ -292,6 +308,7 @@ public class Project extends Application
         //Total of all items Totals
         textArea.appendText("Grand Total : $" + getTotalsTotal());
     }
+
     //Adds the totals of all items in list and returns it
     private double getTotalsTotal()
     {
@@ -305,6 +322,7 @@ public class Project extends Application
         totalsTotal = Math.round(totalsTotal * 100.0)/100.0;
         return totalsTotal;
     }
+
     //Simple method which sets all text-fields values to ""
     private void clearTextFields()
     {
@@ -338,7 +356,7 @@ public class Project extends Application
         return false;
     }
 
-
+    //Class used to store bits of information about an item
     public static class Item {
         public final SimpleStringProperty name;
         public final SimpleIntegerProperty quantity;
@@ -351,12 +369,11 @@ public class Project extends Application
             this.quantity = new SimpleIntegerProperty(quantity);
             this.unitCost = new SimpleFloatProperty(unitCost);
             this.total = new SimpleFloatProperty(total);
-            System.out.println(total);
         }
 
-        public String getName() { return this.name.get(); }
-        public int getQuantity() { return this.quantity.get(); }
-        public float getUnitCost() { return this.unitCost.get(); }
+        public String getName() { return this.name.get();}
+        public int getQuantity() { return this.quantity.get();}
+        public float getUnitCost() { return this.unitCost.get();}
         public float getTotal(){return this.total.get();}
     }
 }
