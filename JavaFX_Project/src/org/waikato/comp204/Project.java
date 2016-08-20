@@ -169,6 +169,7 @@ public class Project extends Application
         GridPane.setConstraints(textArea,3,0, 1,20);
         grid.getChildren().add(textArea);
     }
+
     private void setupButton()
     {
         Button BAdd = new Button("Add");
@@ -238,8 +239,9 @@ public class Project extends Application
         System.out.println(temp.getTotal());
         observable.add(temp);
         updateReceipt();
-        //updateTextArea();
+
         clearTextFields();
+        leftTextFields[3].setId("text-field-white");
     }
 
     private void updateTotal()
