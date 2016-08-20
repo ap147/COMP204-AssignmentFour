@@ -169,30 +169,33 @@ public class Project extends Application
         GridPane.setConstraints(textArea,3,0, 1,20);
         grid.getChildren().add(textArea);
     }
-
+    //creates, positions add button which takes input from textfields and calls a method to save them to list
     private void setupButton()
     {
         Button BAdd = new Button("Add");
         BAdd.setOnAction(event -> {
+            //if inputs are valid
             if(TextFieldChecker())
             {
+                //extract info out of textfields
                 System.out.println("Correct Input");
                 String inputItemName = leftTextFields[0].getText();
                 int inputItemQuantity = Integer.parseInt(leftTextFields[1].getText());
                 float inputUnitCost = Float.parseFloat(leftTextFields[2].getText());
                 double inputTotal = Float.parseFloat(leftTextFields[3].getText());
                 inputTotal = Math.round(inputTotal * 100.0) / 100.0;
-
+                //save item to list
                 saveItem(inputItemName,inputItemQuantity,inputUnitCost, (float)inputTotal);
             }
         });
-
-
+        //adding button to grid
         GridPane.setConstraints(BAdd,1,4);
         grid.getChildren().add(BAdd);
     }
+    //sets out table (middle) , sets its coloums and links them to list and adds it to grid
     private void setupTable()
     {
+        //creating colums
         table.setEditable(true);
         TableColumn itemName = new TableColumn("Name");
         TableColumn itemQuantity = new TableColumn("Quantity");
@@ -201,18 +204,20 @@ public class Project extends Application
         itemName.setCellValueFactory(new PropertyValueFactory<Item, String>("name"));
         itemQuantity.setCellValueFactory(new PropertyValueFactory<Item, String>("quantity"));
         itemUnit.setCellValueFactory(new PropertyValueFactory<Item, String>("unitCost"));
-
         itemTotal.setCellValueFactory(new PropertyValueFactory<Item, String>("total"));
 
-        //giving table list to get information from
+        //giving table the list to get information from
         table.setItems(observable);
+        //adding colums to table
         table.getColumns().addAll(itemName,itemQuantity, itemUnit, itemTotal);
 
         grid.add(table,2,0,1,20);
     }
+    //Checks all textfieldsm if they are all valid
     private boolean TextFieldChecker()
     {
         System.out.println("TextField Checker");
+        //if item name exists, unit is an float, amount is an int
         if(!leftTextFields[0].getText().trim().isEmpty() && CheckIfNum(leftTextFields[1].getText(),false) && CheckIfNum(leftTextFields[2].getText(),true) && CheckIfNum(leftTextFields[3].getText(),true))
         {
             System.out.println("True");
@@ -221,14 +226,15 @@ public class Project extends Application
         System.out.println("False");
         return false;
     }
+    //Creates a item using passed in parameters and saves in list
     private void saveItem(String ProductName, int Quantity, float Cost, float Total)
     {
         System.out.println("Save Item");
         Item temp = new Item(ProductName, Quantity, Cost, Total);
-        System.out.println(temp.getTotal());
+        //adding to list
         observable.add(temp);
         updateReceipt();
-
+        //clearing textfields to "", setting total txtfield background to whie incase it was red
         clearTextFields();
         leftTextFields[3].setId("text-field-white");
     }
@@ -299,6 +305,7 @@ public class Project extends Application
         totalsTotal = Math.round(totalsTotal * 100.0)/100.0;
         return totalsTotal;
     }
+    //Simple method which sets all text-fields values to ""
     private void clearTextFields()
     {
         leftTextFields[0].setText("");
@@ -307,14 +314,14 @@ public class Project extends Application
         leftTextFields[3].setText("");
     }
 
-    //retusn true if passed in value is an number, where being double or int
+    //retusn true if passed in value is an number, where being float or int
     private static boolean CheckIfNum(String num, boolean isitPrice)
     {
         try{
             //if its a double
             if(isitPrice)
             {
-                //try turning it to a double
+                //try turning it to a float
                 float x = Float.parseFloat(num);
                 return true;
             }
@@ -330,6 +337,7 @@ public class Project extends Application
         }
         return false;
     }
+
 
     public static class Item {
         public final SimpleStringProperty name;
@@ -350,7 +358,6 @@ public class Project extends Application
         public int getQuantity() { return this.quantity.get(); }
         public float getUnitCost() { return this.unitCost.get(); }
         public float getTotal(){return this.total.get();}
-
     }
 }
 
