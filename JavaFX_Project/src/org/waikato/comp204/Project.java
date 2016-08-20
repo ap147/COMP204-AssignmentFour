@@ -113,41 +113,44 @@ public class Project extends Application
     }
 
     //Checks what user altered the total textfield too, if correct then make sure textfiedl color is white or else red
-    public void TotlalAlterted()
-    {
+    public void TotlalAlterted() {
         double CorrectTotal = 0;
         //Getting what user changed total too
         double UserTotal = Double.parseDouble(leftTextFields[3].getText());
 
         //If input in unit text box and amount text box is added, then calculate if correct
-        if(!leftTextFields[1].getText().trim().isEmpty() && !leftTextFields[2].getText().trim().isEmpty())
-        {
+        if (!leftTextFields[1].getText().trim().isEmpty() && !leftTextFields[2].getText().trim().isEmpty()) {
+
             //Work out the correct total and round it to 2dp
             int units = Integer.parseInt(leftTextFields[1].getText());
             float amount = Float.parseFloat(leftTextFields[2].getText());
 
             CorrectTotal = units * amount;
-            CorrectTotal = Math.round(CorrectTotal * 100.0)/ 100.0;
+            CorrectTotal = Math.round(CorrectTotal * 100.0) / 100.0;
             //round what user input was to 2dp
-            UserTotal = Math.round(UserTotal * 100.0)/ 100.0;
+            UserTotal = Math.round(UserTotal * 100.0) / 100.0;
 
             System.out.println("Correct Total :" + CorrectTotal);
             System.out.println("User Input Total : " + UserTotal);
-        }
 
-        //user total is not correct so change color
-        if(CorrectTotal == 0 || UserTotal != CorrectTotal)
-        {
-            //Change background Color To Red
-            System.out.println("Changing Total textbox background color to : RED ");
-            leftTextFields[3].setId("text-field-red");
+
+            //user total is not correct so change color
+            if (CorrectTotal == 0 || UserTotal != CorrectTotal) {
+                //Change background Color To Red
+                System.out.println("Changing Total textbox background color to : RED ");
+                leftTextFields[3].setId("text-field-red");
+            } else {
+                //Change background Color To Black
+                System.out.println("Changing Total textbox background color to : White ");
+                leftTextFields[3].setId("text-field-white");
+            }
         }
-        else
+        //if all textfields are null then change backgound color back to white
+        else if (leftTextFields[1].getText().trim().isEmpty() && leftTextFields[2].getText().trim().isEmpty() && leftTextFields[3].getText().trim().isEmpty() && leftTextFields[0].getText().trim().isEmpty())
         {
-            //Change background Color To Black
-            System.out.println("Changing Total textbox background color to : White ");
             leftTextFields[3].setId("text-field-white");
         }
+
     }
 
     //Setups up item labels on grid (left hand side).
