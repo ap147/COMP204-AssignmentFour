@@ -155,7 +155,7 @@ public class Project extends Application
         }
     }
 
-    //Setups up item labels on grid (left hand side)
+    //Setups up item labels on grid (left hand side).
     private void setupLabels()
     {
         Label labelProductName = new Label("Product Name       : ");
