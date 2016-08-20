@@ -4,6 +4,8 @@ package org.waikato.comp204;
 //http://docs.oracle.com/javafx/2/layout/builtin_layouts.html
 //https://www.youtube.com/watch?v=YtKF1JKtRWM
 //https://www.youtube.com/watch?v=lVdtE2BNd88
+//http://stackoverflow.com/questions/16225225/javafx-scene-css-doesnt-work
+//http://stackoverflow.com/questions/28397700/javafx-how-to-write-text-to-a-new-line-in-a-textarea
 
 import javafx.application.Application;
 import javafx.beans.property.*;
@@ -12,34 +14,25 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
-
-import java.io.File;
-import java.text.DecimalFormat;
 import java.util.Random;
-import java.lang.Object;
 
-//http://stackoverflow.com/questions/28397700/javafx-how-to-write-text-to-a-new-line-in-a-textarea
 public class Project extends Application
 {
     private static GridPane grid = new GridPane();
+
+    //Recipt is printed on this, (Right side)
     private TextArea textArea = new TextArea();
-
-    private double currentItemTotal;
-
+    //Stores textfields that user inputs information about item
     private TextField[] leftTextFields = new TextField[4];
-
+    //Displays all the items added (Middle)
     private TableView<Item> table = new TableView<Item>();
+    //Stores all the added items
     ObservableList<Item> observable = FXCollections.observableArrayList();
     @Override
     public void start(Stage primaryStage) {
@@ -53,35 +46,41 @@ public class Project extends Application
         setupTable();
 
         Scene scene = new Scene(grid, 900, 600);
+        //Adding css file which changes label background,change text-field background color
         scene.getStylesheets().add(
                 getClass().getResource("stylesheet.css").toExternalForm()
         );
-       // scene.getStylesheets().add("stylesheet.css");
         primaryStage.setScene(scene);
         primaryStage.show();
     }
     public static void main(String[] args) {
         launch(args);
     }
+    //Splits window into 3 halfs vertically, each one used for diffrent things (label/textfields, Table, TextArea)
     private void setupGrid()
     {
-        grid.setGridLinesVisible(true);
+        grid.setGridLinesVisible(false);
 
         grid.setPadding(new Insets(10,10,10,10));
         grid.setVgap(8);
         grid.setHgap(10);
 
+        //Spliting it into 3 equal sectors (1 = labels 1.5 = textfields , 2 = table, 3 = textarea)
+        //1
         ColumnConstraints column1 = new ColumnConstraints();
         column1.setPercentWidth(16.665);
+        //1.5
         ColumnConstraints column1point5 = new ColumnConstraints();
         column1point5.setPercentWidth(16.665);
+        //2
         ColumnConstraints column2 = new ColumnConstraints();
         column2.setPercentWidth(33.33);
+        //3
         ColumnConstraints column3 = new ColumnConstraints();
         column3.setPercentWidth(33.33);
-
+        //Adding them to grid
         grid.getColumnConstraints().addAll(column1,column1point5, column2,column3);
-
+        //Creating 20 rows
         for(int x =0; x < 20; x++)
         {
             RowConstraints row1 = new RowConstraints();
@@ -89,6 +88,8 @@ public class Project extends Application
             grid.getRowConstraints().add(row1);
         }
     }
+
+    //Setting up inputs where user enters informaiton about item, create, position
     private void setupTextField()
     {
         TextField Temp;
@@ -101,24 +102,29 @@ public class Project extends Application
             grid.getChildren().add(Temp);
         }
 
-        //Product quantity / Unit Cost
+        //Product quantity/Unit Cost, update the tolal field
         leftTextFields[1].setOnKeyReleased(event -> updateTotal());
         leftTextFields[2].setOnKeyReleased(event -> updateTotal());
+        //if user alters total field check if textfield background color needs to be changed
         leftTextFields[3].setOnKeyReleased(event -> TotlalAlterted());
     }
+    //Checks what user altered the total textfield too, if correct then make sure textfiedl color is white or else red
     public void TotlalAlterted()
     {
         double CorrectTotal = 0;
+        //Getting what user changed total too
         double UserTotal = Double.parseDouble(leftTextFields[3].getText());
+
         //If input in unit text box and amount text box is added, then calculate if correct
         if(!leftTextFields[1].getText().trim().isEmpty() && !leftTextFields[2].getText().trim().isEmpty())
         {
+            //Work out the correct total and round it to 2dp
             int units = Integer.parseInt(leftTextFields[1].getText());
             float amount = Float.parseFloat(leftTextFields[2].getText());
 
             CorrectTotal = units * amount;
             CorrectTotal = Math.round(CorrectTotal * 100.0)/ 100.0;
-
+            //round what user input was to 2dp
             UserTotal = Math.round(UserTotal * 100.0)/ 100.0;
 
             System.out.println("Correct Total :" + CorrectTotal);
@@ -129,16 +135,15 @@ public class Project extends Application
         if(CorrectTotal == 0 || UserTotal != CorrectTotal)
         {
             //Change background Color To Red
-            System.out.println("Changing Total textbox text color to : RED ");
+            System.out.println("Changing Total textbox background color to : RED ");
             leftTextFields[3].setId("text-field-red");
         }
         else
         {
             //Change background Color To Black
-            System.out.println("Changing Total textbox text color to : BLACK ");
+            System.out.println("Changing Total textbox background color to : White ");
             leftTextFields[3].setId("text-field-white");
         }
-
     }
     //Setups up item labels on grid (left hand side)
     private void setupLabels()
@@ -183,13 +188,13 @@ public class Project extends Application
 
         Button BclearNAdd = new Button("Clear");
 
-        BclearNAdd.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                clearTextArea();
-                textArea.setText(getRandomNumber()+"");
-            }
+        BclearNAdd.setOnAction(event -> {
+                  clearTextFields();
+                  clearTextArea();
+                  textArea.setText(getRandomNumber()+"");
         });
+
+
 
         GridPane.setConstraints(BAdd,1,4);
         GridPane.setConstraints(BclearNAdd,0,4);
@@ -280,6 +285,8 @@ public class Project extends Application
             textArea.appendText("\n");
         }
         textArea.appendText("\n");
+        textArea.appendText("\n");
+        textArea.appendText("------------------------------");
         textArea.appendText("\n");
 
         textArea.appendText("Grand Total : $" + getTotalsTotal());
