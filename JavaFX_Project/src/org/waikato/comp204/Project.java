@@ -21,6 +21,8 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+
+import java.text.DecimalFormat;
 import java.util.Random;
 import java.lang.Object;
 
@@ -99,8 +101,33 @@ public class Project extends Application
     }
     public void TotlalAlterted()
     {
-        //Check if unit cost/ Amount exist
-        
+        float CorrectTotal = 0;
+        float UserTotal = Float.parseFloat(leftTextFields[3].getText());
+        //If input in unit text box and amount text box is added, then calculate if correct
+        if(!leftTextFields[1].getText().trim().isEmpty() && !leftTextFields[2].getText().trim().isEmpty())
+        {
+            int units = Integer.parseInt(leftTextFields[1].getText());
+            float amount = Float.parseFloat(leftTextFields[2].getText());
+
+            CorrectTotal = units * amount;
+
+            DecimalFormat df = new DecimalFormat("#.##");
+            CorrectTotal = Float.parseFloat(df.format(CorrectTotal));
+            System.out.println("Correct Total :" + CorrectTotal);
+            System.out.println("User Input Total : " + UserTotal);
+        }
+
+        //user total is not correct so change color
+        if(CorrectTotal == 0 || UserTotal != CorrectTotal)
+        {
+            //Change Text Color To Red
+
+        }
+        else
+        {
+            //Change Text Color To Black
+            
+        }
 
     }
     private void setupLabels()
@@ -173,7 +200,7 @@ public class Project extends Application
     }
     private boolean TextFieldChecker()
     {
-        System.out.println("TextField CHecker");
+        System.out.println("TextField Checker");
         if(!leftTextFields[0].getText().trim().isEmpty() && CheckIfNum(leftTextFields[1].getText(),false) && CheckIfNum(leftTextFields[2].getText(),true) && CheckIfNum(leftTextFields[3].getText(),true))
         {
             System.out.println("True");
