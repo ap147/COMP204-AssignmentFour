@@ -271,6 +271,8 @@ public class Project extends Application
         {
             leftTextFields[3].setText("0.0");
         }
+        //since we just corrected it
+        leftTextFields[3].setId("text-field-white");
     }
 
     //update textarea when add button is pressed
